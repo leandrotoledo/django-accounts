@@ -64,7 +64,7 @@ class Profile(models.Model):
     cell_phone = models.CharField(max_length=10, blank=True)
     nationality = models.ForeignKey(Country, blank=True, null=True)
     citizenship = models.ForeignKey(Municipality, blank=True, null=True)
-    address = models.ForeignKey(Place)
+    address = models.ForeignKey(Place, blank=True, null=True)
     objects = ProfileManager()
 
     def __unicode__(self):
