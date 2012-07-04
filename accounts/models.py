@@ -7,7 +7,7 @@ from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
 
-from locations import Place, Municipality, Country
+from locations.models import Place, Municipality, Country
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
