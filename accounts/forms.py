@@ -46,20 +46,20 @@ class UserForm(forms.ModelForm):
         return user
 
 class ProfileForm(UserForm):
-    sex = forms.CharField(label=_(u'Sex'), widget=forms.Select(choices=Profile.SEX_CHOICES))
+    gender = forms.CharField(label=_(u'Gender'), widget=forms.Select(choices=Profile.GENDER_CHOICES))
     birth_date = forms.DateField(label=_(u'Birthday'), widget=SelectDateWidget(years=range(now().year-100, now().year)))
 
     def clean_sex(self):
-        sex = self.cleaned_data['sex']
-        if sex in set(x[0] for x in Profile.SEX_CHOICES):
+        sex = self.cleaned_data['gender']
+        if sex in set(x[0] for x in Profile.GENDER_CHOICES):
             return sex
-        raise forms.ValidationError(_(u'Please select a valid sex.'))
+        raise forms.ValidationError(_(u'Please select a valid gender.'))
 
     def save(self):
         user = super(ProfileForm, self).save(self)
 
         profile = user.get_profile()
-        profile.sex = self.cleaned_data['sex']
+        profile.gender = self.cleaned_data['gender']
         profile.birth_date = self.cleaned_data['birth_date']
         profile.save()
 
