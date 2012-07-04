@@ -7,6 +7,8 @@ from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
 
+from locations import Place, Municipality, Country
+
 ACCOUNT_ACTIVATION_DAYS = 7
 
 class ProfileManager(models.Manager):
@@ -39,22 +41,43 @@ class ProfileManager(models.Manager):
                 profile.delete()
 
 class Profile(models.Model):
-    SEX_CHOICES = (
+    GENDER_CHOICES = (
         (u'F', _(u'Female')),
         (u'M', _(u'Male')),
     )
-
     user = models.OneToOneField(User, unique=True)
     is_active = models.BooleanField(default=False)
-    activation_key = models.CharField(_(u'Activation Key'), max_length=32, blank=True)
-    sex = models.CharField(_(u'Sex'), max_length=1, choices=(SEX_CHOICES), blank=True)
+    activation_key = models.CharField(
+        _(u'Activation Key'), 
+        max_length=32, 
+        blank=True
+    )
+    gender = models.CharField(
+        _(u'Gender'), 
+        max_length=1, 
+        choices=(GENDER_CHOICES), 
+        blank=True
+    )
     birth_date = models.DateField(_('Birthday'), blank=True, null=True)
-
+    home_phone = models.CharField(max_length=10, blank=True)
+    work_phone = models.CharField(max_length=10, blank=True)
+    cell_phone = models.CharField(max_length=10, blank=True)
+    nationality = models.ForeignKey(Country, blank=True, null=True)
+    citizenship = models.ForeignKey(Municipality, blank=True, null=True)
+    address = models.ForeignKey(Place)
     objects = ProfileManager()
 
     def __unicode__(self):
-        return self.user.username
-
+        return '{}: {} {}'.format(
+            self.user.username, 
+            self.user.first_name, 
+            self.user.last_name
+        )
+    
+    @property
+    def email(self):
+        return self.user.email
+            
     @property
     def activation_key_expired(self):
         expiration_date = now().date() - self.user.date_joined.date()
