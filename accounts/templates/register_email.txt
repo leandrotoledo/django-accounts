@@ -1,0 +1,11 @@
+Hello {{ user.get_full_name }}!
+
+You have just signed up for the {{ site.name }}.
+
+To confirm your subscription please access the link:
+
+http://{{ site }}{% url accounts:activate activation_key %}
+
+All the best,
+--
+{{ site }}

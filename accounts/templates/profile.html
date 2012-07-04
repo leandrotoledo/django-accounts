@@ -1,0 +1,7 @@
+<h1>Olá {{ user.get_full_name }}!</h1>
+
+<a href="{% url accounts:logout %}">Sair</a>
+
+{% if not user.get_profile.is_active %}
+    <a href="{% url accounts:register %}">Verifique agora seu e-mail</a>
+{% endif %}
