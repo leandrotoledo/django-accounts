@@ -18,7 +18,7 @@ def signup(request):
         if request.user.is_staff:
             return HttpResponseRedirect(reverse('admin:index'))
 
-        return HttpResponseRedirect(reverse('accounts:profile'))
+        return HttpResponseRedirect(reverse('profile'))
 
     if request.method == 'POST':
         form = ProfileForm(request.POST)
@@ -30,7 +30,7 @@ def signup(request):
 
             login(request, user)
 
-            return HttpResponseRedirect(reverse('accounts:profile'))
+            return HttpResponseRedirect(reverse('profile'))
     else:
         form = ProfileForm()
 
@@ -58,9 +58,9 @@ def register(request):
 
     user.email_user(subject, message)
 
-    return HttpResponseRedirect(reverse('accounts:profile'))
+    return HttpResponseRedirect(reverse('profile'))
 
 def activate(request, activation_key):
     profile = Profile.objects.activate_profile(activation_key)
 
-    return HttpResponseRedirect(reverse('accounts:profile'))
+    return HttpResponseRedirect(reverse('profile'))
