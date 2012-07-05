@@ -11,11 +11,11 @@ class ProfileModelTest(TestCase):
         user = User.objects.create_user(username='foo',
                                         email='foo@fighters.com',
                                         password='foofighters')
-        user.save()
 
-        profile = Profile.objects.create(user=user)
-        profile.sex = 'M'
-        profile.birth_date = datetime.date(1990, 12, 31)
+
+        profile = user.get_profile()
+        profile.gender = 'M'
+        profile.birth_date = datetime.now()
         profile.save()
 
         all_profiles_in_database = Profile.objects.all()

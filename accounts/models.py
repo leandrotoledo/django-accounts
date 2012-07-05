@@ -42,42 +42,67 @@ class ProfileManager(models.Manager):
 
 class Profile(models.Model):
     GENDER_CHOICES = (
-        (u'F', _(u'Female')),
-        (u'M', _(u'Male')),
+        ('F', _(u'Female')),
+        ('M', _(u'Male')),
     )
-    user = models.OneToOneField(User, unique=True)
-    is_active = models.BooleanField(default=False)
+
+    is_active = models.BooleanField(
+        _(u'Is Active?'),
+        default=False
+    )
     activation_key = models.CharField(
-        _(u'Activation Key'), 
-        max_length=32, 
+        _(u'Activation Key'),
+        max_length=32,
         blank=True
     )
     gender = models.CharField(
-        _(u'Gender'), 
-        max_length=1, 
-        choices=(GENDER_CHOICES), 
+        _(u'Gender'),
+        max_length=1,
+        choices=(GENDER_CHOICES),
         blank=True
     )
-    birth_date = models.DateField(_('Birthday'), blank=True, null=True)
-    home_phone = models.CharField(max_length=10, blank=True)
-    work_phone = models.CharField(max_length=10, blank=True)
-    cell_phone = models.CharField(max_length=10, blank=True)
+    full_name = models.CharField(
+        _(u'Full Name'),
+        max_length=200,
+        blank=True
+    )
+    birth_date = models.DateField(
+        _('Birthdate'),
+        blank=True,
+        null=True
+    )
+    home_phone = models.CharField(
+        _(u'Home Phone'),
+        max_length=10,
+        blank=True
+    )
+    work_phone = models.CharField(
+        _(u'Work Phone'),
+        max_length=10,
+        blank=True
+    )
+    cell_phone = models.CharField(
+        _(u'Cell Phone'),
+        max_length=10,
+        blank=True
+    )
+
+    user = models.OneToOneField(User, unique=True)
+    address = models.ForeignKey(Place, blank=True, null=True)
     nationality = models.ForeignKey(Country, blank=True, null=True)
     citizenship = models.ForeignKey(Municipality, blank=True, null=True)
-    address = models.ForeignKey(Place, blank=True, null=True)
+
     objects = ProfileManager()
 
     def __unicode__(self):
-        return '{}: {} {}'.format(
-            self.user.username, 
-            self.user.first_name, 
-            self.user.last_name
-        )
-    
-    @property
-    def email(self):
-        return self.user.email
-            
+        if self.user.first_name and self.user.last_name:
+            return u'{}: {} {}'.format(
+                self.user.username,
+                self.user.first_name,
+                self.user.last_name
+            )
+        return self.user.username
+
     @property
     def activation_key_expired(self):
         expiration_date = now().date() - self.user.date_joined.date()

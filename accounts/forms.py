@@ -7,10 +7,22 @@ from django.utils.timezone import now
 from models import Profile
 
 class UserForm(forms.ModelForm):
-    first_name = forms.CharField(label=_(u'First name'), max_length=30)
-    last_name = forms.CharField(label=_(u'Last name'), max_length=30)
-    email = forms.EmailField(label=_(u'E-mail address'), max_length=75)
-    password = forms.CharField(label=_(u'Pasword'), widget=forms.PasswordInput)
+    first_name = forms.CharField(
+        label=_(u'First name'),
+        max_length=30
+    )
+    last_name = forms.CharField(
+        label=_(u'Last name'),
+        max_length=30
+    )
+    email = forms.EmailField(
+        label=_(u'E-mail address'),
+        max_length=75
+    )
+    password = forms.CharField(
+        label=_(u'Password'),
+        widget=forms.PasswordInput
+    )
 
     class Meta:
         model = User
@@ -46,8 +58,14 @@ class UserForm(forms.ModelForm):
         return user
 
 class ProfileForm(UserForm):
-    gender = forms.CharField(label=_(u'Gender'), widget=forms.Select(choices=Profile.GENDER_CHOICES))
-    birth_date = forms.DateField(label=_(u'Birthday'), widget=SelectDateWidget(years=range(now().year-100, now().year)))
+    gender = forms.CharField(
+        label=_(u'Gender'),
+        widget=forms.Select(choices=Profile.GENDER_CHOICES)
+    )
+    birth_date = forms.DateField(
+        label=_(u'Birthday'),
+        widget=SelectDateWidget(years=range(now().year-100, now().year))
+    )
 
     def clean_sex(self):
         sex = self.cleaned_data['gender']
