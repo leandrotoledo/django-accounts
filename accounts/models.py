@@ -108,6 +108,10 @@ class Profile(models.Model):
         expiration_date = now().date() - self.user.date_joined.date()
         return self.is_active or (expiration_date.days >= ACCOUNT_ACTIVATION_DAYS)
 
+    class Meta:
+        verbose_name = _('profile')
+        verbose_name_plural = _('profiles')
+
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create_profile(instance)
