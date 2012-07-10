@@ -91,15 +91,13 @@ class Profile(models.Model):
     address = models.ForeignKey(Place, blank=True, null=True)
     nationality = models.ForeignKey(Country, blank=True, null=True)
     citizenship = models.ForeignKey(Municipality, blank=True, null=True)
-
     objects = ProfileManager()
 
     def __unicode__(self):
         if self.user.first_name and self.user.last_name:
-            return u'{}: {} {}'.format(
+            return u'{}: {}'.format(
                 self.user.username,
-                self.user.first_name,
-                self.user.last_name
+                self.user.get_full_name()
             )
         return self.user.username
 
