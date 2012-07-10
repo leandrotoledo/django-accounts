@@ -11,6 +11,7 @@ from locations.models import Place, Municipality, Country
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
+
 class ProfileManager(models.Manager):
     def activate_profile(self, activation_key):
         try:
@@ -39,6 +40,7 @@ class ProfileManager(models.Manager):
                 user.save()
 
                 profile.delete()
+
 
 class Profile(models.Model):
     GENDER_CHOICES = (
@@ -97,7 +99,7 @@ class Profile(models.Model):
         return self.user.username
 
     @property
-    def full_name():
+    def full_name(self):
         return self.user.get_full_name()
 
     @property
@@ -108,6 +110,7 @@ class Profile(models.Model):
     class Meta:
         verbose_name = _('profile')
         verbose_name_plural = _('profiles')
+
 
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
