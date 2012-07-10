@@ -61,11 +61,6 @@ class Profile(models.Model):
         choices=(GENDER_CHOICES),
         blank=True
     )
-    full_name = models.CharField(
-        _(u'Full Name'),
-        max_length=200,
-        blank=True
-    )
     birth_date = models.DateField(
         _('Birthdate'),
         blank=True,
@@ -100,6 +95,10 @@ class Profile(models.Model):
                 self.user.get_full_name()
             )
         return self.user.username
+
+    @property
+    def full_name():
+        return self.user.get_full_name()
 
     @property
     def activation_key_expired(self):

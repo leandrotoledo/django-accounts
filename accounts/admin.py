@@ -5,7 +5,16 @@ from django.contrib.auth.models import User
 from forms import UserForm
 from models import Profile
 
+
+class ProfileAdmin(admin.ModelAdmin):
+    exclude = ('activation_key',)
+
+class ProfileAdminInline(admin.StackedInline):
+    model = Profile
+    exclude = ('activation_key',)
+    
 class UserAdmin(UserAdmin):
+    inlines = [ProfileAdminInline]
     add_form = UserForm
     add_fieldsets = (
         (None, {
@@ -20,8 +29,6 @@ class UserAdmin(UserAdmin):
         ),
     )
 
-class ProfileAdmin(admin.ModelAdmin):
-    exclude = ('activation_key',)
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
