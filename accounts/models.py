@@ -83,6 +83,11 @@ class Profile(models.Model):
         max_length=10,
         blank=True
     )
+    full_name = models.CharField(
+        _(u'full name'),
+        max_length=255,
+        blank=True
+    )
 
     user = models.OneToOneField(User, unique=True)
     address = models.ForeignKey(Place, blank=True, null=True)
@@ -97,10 +102,6 @@ class Profile(models.Model):
                 self.user.get_full_name()
             )
         return self.user.username
-
-    @property
-    def full_name(self):
-        return self.user.get_full_name()
 
     @property
     def activation_key_expired(self):

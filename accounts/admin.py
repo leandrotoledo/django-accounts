@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from forms import UserForm
 from models import Profile
-
+from baseapp.admin import StudentAdminInline
 
 class ProfileAdmin(admin.ModelAdmin):
     exclude = ('activation_key',)
@@ -14,7 +14,11 @@ class ProfileAdminInline(admin.StackedInline):
     exclude = ('activation_key',)
     
 class UserAdmin(UserAdmin):
-    inlines = [ProfileAdminInline]
+    exclude = ('first_name', 'last_name')
+    inlines = [
+        ProfileAdminInline,
+    ]
+    
     add_form = UserForm
     add_fieldsets = (
         (None, {
