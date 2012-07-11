@@ -96,12 +96,7 @@ class Profile(models.Model):
     objects = ProfileManager()
 
     def __unicode__(self):
-        if self.user.first_name and self.user.last_name:
-            return u'{}: {}'.format(
-                self.user.username,
-                self.user.get_full_name()
-            )
-        return self.user.username
+        return self.full_name
 
     @property
     def activation_key_expired(self):
